@@ -15,6 +15,7 @@ class selinux::params {
     }
     'Debian':
     {
+      $selinux_utils='selinux-utils'
       case $::operatingsystem
       {
       'Ubuntu':
@@ -23,7 +24,6 @@ class selinux::params {
         {
           /^14.*$/:
           {
-            $selinux_utils='selinux-utils'
           }
           default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
         }
