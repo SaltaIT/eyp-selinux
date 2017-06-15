@@ -18,9 +18,9 @@ define selinux::semodule(
     creates => $basedir,
   }
 
-  if(!defined(Package[$selinux::params::checkpolicy]))
+  if(!defined(Package[$selinux::params::modulebuild_pkgs]))
   {
-    package { $selinux::params::checkpolicy:
+    package { $selinux::params::modulebuild_pkgs:
       ensure => 'installed',
     }
   }
@@ -29,7 +29,7 @@ define selinux::semodule(
   exec { "checkmodule ${modulename}":
     command => "checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te",
     creates => "${basedir}/${modulename}.mod",
-    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::checkpolicy] ],
+    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::modulebuild_pkgs] ],
     notify => Exec["semodule ${modulename}"],
   }
 
