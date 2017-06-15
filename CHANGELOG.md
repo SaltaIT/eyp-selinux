@@ -2,7 +2,7 @@
 
 ## 0.1.13
 
-* improved semodule update process
+* improved semodule refresh
 
 ## 0.1.12
 
