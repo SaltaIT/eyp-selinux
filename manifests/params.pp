@@ -1,7 +1,8 @@
 class selinux::params {
 
   $policycoreutils = 'policycoreutils'
-  $modulebuild_pkgs = [ 'checkpolicy', 'policycoreutils-python' ]
+  $checkpolicy = 'checkpolicy'
+  $policycoreutils_build = 'policycoreutils-python'
 
   case $::osfamily
   {

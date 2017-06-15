@@ -18,9 +18,16 @@ define selinux::semodule(
     creates => $basedir,
   }
 
-  if(!defined(Package[$selinux::params::modulebuild_pkgs]))
+  if(!defined(Package[$selinux::params::checkpolicy]))
   {
-    package { $selinux::params::modulebuild_pkgs:
+    package { $selinux::params::checkpolicy:
+      ensure => 'installed',
+    }
+  }
+
+  if(!defined(Package[$selinux::params::policycoreutils_build]))
+  {
+    package { $selinux::params::policycoreutils_build:
       ensure => 'installed',
     }
   }
@@ -29,7 +36,7 @@ define selinux::semodule(
   exec { "checkmodule ${modulename}":
     command => "checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te",
     creates => "${basedir}/${modulename}.mod",
-    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::modulebuild_pkgs] ],
+    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::checkpolicy] ],
     notify => Exec["semodule ${modulename}"],
   }
 
@@ -44,7 +51,7 @@ define selinux::semodule(
   exec { "semodule ${modulename}":
     command => "semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp",
     creates => "${basedir}/${modulename}.pp",
-    require => Exec["checkmodule ${modulename}"],
+    require => [ Exec["checkmodule ${modulename}"], Package[$selinux::params::policycoreutils_build] ],
   }
 
   case $ensure
