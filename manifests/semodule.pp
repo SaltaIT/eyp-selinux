@@ -35,7 +35,7 @@ define selinux::semodule(
 
   # $ semodule_package -m module.mod -o module.pp
   exec { "semodule ${modulename}":
-    command => "semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp",
+    command => "semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp",a
     creates => "${basedir}/${modulename}.pp",
     require => Exec["checkmodule ${modulename}"],
   }
@@ -46,9 +46,9 @@ define selinux::semodule(
     {
       # $ semodule -i module.pp
       exec { "semodule install ${modulename}":
-        command    => "semodule -i ${basedir}/${modulename}.pp",
-        notifyonly => true,
-        subscribe  => Exec["semodule ${modulename}"],
+        command     => "semodule -i ${basedir}/${modulename}.pp",
+        refreshonly => true,
+        subscribe   => Exec["semodule ${modulename}"],
       }
     }
     default: { fail('not implemented') }
