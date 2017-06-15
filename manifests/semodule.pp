@@ -71,10 +71,6 @@ define selinux::semodule(
         subscribe   => Exec["semodule ${modulename}"],
       }
     }
-    'latest':
-    {
-
-    }
     default: { fail('not implemented') }
   }
 }
