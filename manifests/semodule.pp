@@ -35,7 +35,7 @@ define selinux::semodule(
 
   # $ semodule_package -m module.mod -o module.pp
   exec { "semodule ${modulename}":
-    command => "semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp"
+    command => "semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp",
     creates => "${basedir}/${modulename}.pp",
     require => Exec["checkmodule ${modulename}"],
   }
