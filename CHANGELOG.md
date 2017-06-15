@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## 0.1.13
+
+* improved semodule update process
+
 ## 0.1.12
 
 * improved selinux boolean support
+* semodule support
 
 ## 0.1.11
 
