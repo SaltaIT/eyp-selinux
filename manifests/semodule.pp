@@ -18,11 +18,18 @@ define selinux::semodule(
     creates => $basedir,
   }
 
+  if(!defined(Package[$selinux::params::checkpolicy]))
+  {
+    package { $selinux::params::checkpolicy:
+      ensure => 'installed',
+    }
+  }
+
   # $ checkmodule -M -m -o puppetmaster.mod /path/to/your/version/controlled/module.te
   exec { "checkmodule ${modulename}":
     command => "checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te",
     creates => "${basedir}/${modulename}.mod",
-    require => Exec["mkdir p ${basedir} $modulename"],
+    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::checkpolicy] ],
     notify => Exec["semodule ${modulename}"],
   }
 

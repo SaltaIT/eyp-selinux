@@ -16,7 +16,7 @@ define selinux::setbool (
   # policycoreutils
   if(!defined(Package[$selinux::params::policycoreutils]))
   {
-    package { 'policycoreutils':
+    package { $selinux::params::policycoreutils:
       ensure => 'installed',
     }
   }
