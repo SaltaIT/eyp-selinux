@@ -14,7 +14,7 @@ define selinux::setbool (
   include ::selinux
 
   # policycoreutils
-  if(!defined(Package['policycoreutils']))
+  if(!defined(Package[$selinux::params::policycoreutils]))
   {
     package { 'policycoreutils':
       ensure => 'installed',
@@ -25,6 +25,6 @@ define selinux::setbool (
     command => inline_template('setsebool <%= @boolname %> <%= scope.function_bool2onoff([@value]) %>'),
     unless  => inline_template('getsebool <%= @boolname %> | grep <%= scope.function_bool2onoff([@value]) %>'),
     path    => '/bin:/sbin:/usr/bin:/usr/sbin',
-    require => Package['policycoreutils'],
+    require => Package[$selinux::params::policycoreutils],
   }
 }

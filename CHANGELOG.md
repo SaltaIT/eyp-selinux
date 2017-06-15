@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.12
+
+* improved selinux boolean support
+
 ## 0.1.11
 
 * added **selinux::setbool**
