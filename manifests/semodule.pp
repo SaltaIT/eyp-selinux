@@ -13,7 +13,7 @@ define selinux::semodule(
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  exec { "mkdir p ${basedir} $modulename":
+  exec { "mkdir p ${basedir} ${modulename}":
     command => "mkdir -p ${basedir}",
     creates => $basedir,
   }
@@ -35,8 +35,8 @@ define selinux::semodule(
   # $ checkmodule -M -m -o puppetmaster.mod /path/to/your/version/controlled/module.te
   exec { "checkmodule ${modulename}":
     command => "bash -c 'rm -f ${basedir}/${modulename}.mod; checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te'",
-    require => [ Exec["mkdir p ${basedir} $modulename"], Package[$selinux::params::checkpolicy] ],
-    notify => Exec["semodule ${modulename}"],
+    require => [ Exec["mkdir p ${basedir} ${modulename}"], Package[$selinux::params::checkpolicy] ],
+    notify  => Exec["semodule ${modulename}"],
   }
 
   if(defined(File["${basedir}/${modulename}.te"]))
