@@ -66,7 +66,7 @@ define selinux::semodule(
     {
       # $ semodule -i module.pp
       exec { "semodule install ${modulename}":
-        command     => "bash -c 'semodule -r nrpe_monit; semodule -i ${basedir}/${modulename}.pp'  > ${basedir}/${modulename}.semodule_install.log 2>&1",
+        command     => "bash -c 'semodule -r nrpe_monit; sleep 1; semodule -i ${basedir}/${modulename}.pp'  > ${basedir}/${modulename}.semodule_install.log 2>&1",
         refreshonly => true,
         subscribe   => Exec["semodule ${modulename}"],
       }
