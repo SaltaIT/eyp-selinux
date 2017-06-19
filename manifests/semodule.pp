@@ -34,7 +34,7 @@ define selinux::semodule(
 
   # $ checkmodule -M -m -o puppetmaster.mod /path/to/your/version/controlled/module.te
   exec { "checkmodule ${modulename}":
-    command => "bash -c 'rm -f ${basedir}/${modulename}.mod; checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te'",
+    command => "bash -c 'rm -f ${basedir}/${modulename}.mod; checkmodule -M -m -o ${basedir}/${modulename}.mod ${basedir}/${modulename}.te' > ${basedir}/${modulename}.checkmodule.log 2>&1",
     require => [ Exec["mkdir p ${basedir} ${modulename}"], Package[$selinux::params::checkpolicy] ],
     notify  => Exec["semodule ${modulename}"],
   }
@@ -55,7 +55,7 @@ define selinux::semodule(
 
   # $ semodule_package -m module.mod -o module.pp
   exec { "semodule ${modulename}":
-    command     => "bash -c 'rm -f ${basedir}/${modulename}.pp; semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp'",
+    command     => "bash -c 'rm -f ${basedir}/${modulename}.pp; semodule_package -m ${basedir}/${modulename}.mod -o ${basedir}/${modulename}.pp'  > ${basedir}/${modulename}.semodule.log 2>&1",
     refreshonly => true,
     require     => [ Exec["checkmodule ${modulename}"], Package[$selinux::params::policycoreutils_build] ],
   }
@@ -66,7 +66,7 @@ define selinux::semodule(
     {
       # $ semodule -i module.pp
       exec { "semodule install ${modulename}":
-        command     => "bash -c 'semodule -r nrpe_monit; semodule -i ${basedir}/${modulename}.pp'",
+        command     => "bash -c 'semodule -r nrpe_monit; semodule -i ${basedir}/${modulename}.pp'  > ${basedir}/${modulename}.semodule_install.log 2>&1",
         refreshonly => true,
         subscribe   => Exec["semodule ${modulename}"],
       }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.14
+
+* added debug info
+
 ## 0.1.13
 
 * improved semodule refresh
