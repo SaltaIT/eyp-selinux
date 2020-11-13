@@ -1,7 +1,7 @@
 {
   "name": "eyp-selinux",
   "version": "0.1.16",
-  "author": "eyp",
+  "author": "Jordi Prats",
   "summary": "SELinux management",
   "license": "Apache-2.0",
   "source": "https://github.com/SaltaIT/eyp-selinux",
